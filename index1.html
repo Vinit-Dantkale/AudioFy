@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>yep</title>
+</head>
+<!-- main wavesurfer.js lib -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.2.3/wavesurfer.min.js"></script>
+
+<!-- wavesurfer.js regions -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.2.3/plugin/wavesurfer.regions.min.js"></script>
+<body>
+<div id="waveform"></div>
+
+<p align="center">
+  <button class="btn btn-primary" onclick="wavesurfer.playPause()">
+    <i class="glyphicon glyphicon-play"></i>
+    Play
+  </button>
+</p>
+</body>
+<script type="text/javascript">
+	var wavesurfer = WaveSurfer.create({
+  container: '#waveform',
+  waveColor: 'violet',
+  maxCanvasWidth: 200,
+  hideScrollbar: false,
+  minPxPerSec: 1,
+  maxPxPerSec: 50
+});
+
+wavesurfer.load('https://ia902606.us.archive.org/35/items/shortpoetry_047_librivox/song_cjrg_teasdale_64kb.mp3');
+
+wavesurfer.on('ready', function () {
+  // Enable creating regions by dragging
+  wavesurfer.enableDragSelection({});
+
+  // Add a couple of pre-defined regions
+  wavesurfer.addRegion({
+    start: 2, // time in seconds
+    end: 5, // time in seconds
+    color: 'hsla(100, 100%, 30%, 0.1)'
+  });
+  
+  wavesurfer.addRegion({
+    start: 8,
+    end: 14,
+    color: 'hsla(200, 100%, 30%, 0.1)'
+  });
+  
+  wavesurfer.addRegion({
+    start: 28,
+    end: 36,
+    color: 'hsla(400, 100%, 30%, 0.1)'
+  });
+});
+
+</script>
+</html>

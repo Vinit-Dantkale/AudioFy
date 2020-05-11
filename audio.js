@@ -291,12 +291,17 @@ function playTrack(regionId) {
 	wavesurfer.regions.list[regionId].play();
 }
 
+<<<<<<< HEAD
 function mergeTrack() {
 	var audioList = new Array();
 	for( var i in wavesurfer.regions.list ) {
 		audioList.push(wavesurfer.regions.list[i]);
 	}
 	mergeAudio(audioList);
+=======
+function mergeTrack(regionId) {
+	//trimAudio();
+>>>>>>> 01df1532c1bd3011dbed8638e9e865418aeb4c10
 }
 
 function downloadTrack(regionId) {

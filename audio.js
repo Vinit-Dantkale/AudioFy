@@ -53,14 +53,14 @@ async function trimAudio(region) {
 	var temp = null;
 	await encodeAudioBufferLame(audioData)
 		.then((res) => {
-			console.log(res)
+			console.log(res);
+			downloadAudio();
 		})
 		.catch((c) => {
-			console.log(c)
+			console.log(c);
 		});
 	console.log(audioData);
 }
-
 
 async function mergeAudio(audioList) {
 	console.log(audioList);
@@ -118,6 +118,7 @@ async function mergeAudio(audioList) {
 	await encodeAudioBufferLame(audioData)
 		.then((res) => {
 			console.log(res)
+			document.getElementById("merged-track").src = processedAudio.src;
 		})
 		.catch((c) => {
 			console.log(c)
@@ -138,15 +139,9 @@ function encodeAudioBufferLame( audioData ) {
 				reject("Error");
 			}
 			var blob = new Blob(event.data.res, {type: 'audio/mp3'});
-      		var t = new window.Audio();
-      		t.src = URL.createObjectURL(blob);
-      		//t.play();
-      		console.log(t);
+      		processedAudio = new window.Audio();
+      		processedAudio.src = URL.createObjectURL(blob);
       		console.log(blob);
-      		var anchorAudio = document.createElement("a");
-      		anchorAudio.href = t.src;
-      		anchorAudio.download = t.src;
-      		anchorAudio.click();
 		};
 
 		worker.postMessage({'audioData': audioData});
@@ -201,9 +196,14 @@ function loadAudio() {
     });
     wavesurfer.on('ready', function() {
     	readAndDecodeAudio();
-    	setPlayButton();
+    	preTrimUIChanges();
     	totalAudioDuration = wavesurfer.getDuration();
     	document.getElementById('time-total').innerText = totalAudioDuration.toFixed(1);
+    	wavesurfer.enableDragSelection({});
+    	console.log(intro);
+    	if(intro != undefined) {
+    		intro.nextStep();
+    	}
     });
 	wavesurfer.on('finish', setPlayButton); 
 	wavesurfer.load(URL.createObjectURL(element.files[0]));
@@ -214,7 +214,7 @@ function loadAudio() {
 	    }
 	});
 	wavesurfer.on('region-created', function(newRegion) {
-		var audioTracks = document.getElementById("audio-tracks");
+		var audioTracks = document.getElementById("audio-tracks").tBodies[0];
 		console.log(audioTracks.childNodes);
 		var tableRow = createAudioRow(new Array(newRegion.id, newRegion.start, newRegion.end));
 		audioTracks.appendChild(tableRow);
@@ -222,8 +222,21 @@ function loadAudio() {
 	});
 	wavesurfer.on('region-update-end', function(newRegion) {
 		document.getElementById(newRegion.id+1).innerText = 
-			( 0 >= newRegion.start ? 0 : newRegion.start);
+			( 0 >= newRegion.start.toFixed(4) ? 0 : newRegion.start.toFixed(4));
 		document.getElementById(newRegion.id+2).innerText = 
-			( wavesurfer.getDuration() <= newRegion.end ? wavesurfer.getDuration() : newRegion.end);
+			( wavesurfer.getDuration() <= newRegion.end ? wavesurfer.getDuration().toFixed(4) : newRegion.end.toFixed(4));
+		if(intro != undefined) {
+			intro.exit();
+		}	
 	});
+	var audioButtons = document.getElementById("audio-buttons");
+	var audioButtonsClass = audioButtons.getAttribute("class").replace("w3-hide","w3-show");
+	audioButtons.setAttribute("class",audioButtonsClass);
+}
+
+function downloadAudio() {
+	var anchorAudio = document.createElement("a");
+    anchorAudio.href = processedAudio.src;
+	anchorAudio.download = processedAudio.src;
+	anchorAudio.click();
 }

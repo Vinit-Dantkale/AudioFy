@@ -185,8 +185,8 @@ function loadAudio() {
     	wavesurfer.destroy();
 	wavesurfer = WaveSurfer.create({
         container: "#waveform",
-        waveColor: '#deddf7',
-        progressColor: '#5856d6',
+        waveColor: '#b6c3b1',
+        progressColor: '#6d8764',
         responsive: true,
         barWidth: 3,
 		barRadius: 3,

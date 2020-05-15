@@ -14,7 +14,6 @@ function showAndHideMergeOption() {
 	} else {
 		mergeOption.setAttribute('class', 'w3-hide');
 	}
-	console.log(mergeOption);
 }
 
 function createAudioRow(arr) {

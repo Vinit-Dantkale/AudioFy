@@ -237,6 +237,7 @@ function loadAudio() {
 function downloadAudio() {
 	var anchorAudio = document.createElement("a");
     anchorAudio.href = processedAudio.src;
-	anchorAudio.download = processedAudio.src;
+	anchorAudio.download = "output.mp3";
 	anchorAudio.click();
+	console.log(anchorAudio);
 }
